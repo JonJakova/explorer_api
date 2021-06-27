@@ -16,6 +16,14 @@ const zoneSchema = new mongoose.Schema
           description:
           {
               type: String
+          },
+          cover:
+          {
+              type: String
+          },
+          album:
+          {
+              type: [String]
           }
         }
     );

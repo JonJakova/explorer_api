@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const Zone = require("../models/zone");
+const constants = require("../services/constant");
+const file_sys = require("../services/file/file_system");
 
 // Get all zones
 router.get("/", async (req, res) => {
@@ -15,10 +17,45 @@ router.get("/", async (req, res) => {
 // Create zone
 router.post("/", async (req, res) => {
     const zone = new Zone(req.body);
+    file_sys.createDir(constants.zone_image, req.body.slug);
 
     try {
         const newZone = await zone.save();
         return res.status(201).json(newZone)
+    } catch (err) {
+        return res.status(400).json({ msg: err.message });
+    }
+});
+
+// Update zone
+router.patch("/:id", getZone, async (req, res) => {
+    if (req.body.name != null) {
+        res.name = req.body.name;
+    }
+    if (req.body.description != null) {
+        res.description = req.body.description;
+    }
+
+    try {
+        const updatedZone = await res.zone.save();
+        return res.json(updatedZone);
+    } catch (err) {
+        return res.status(400).json({ msg: err.message });
+    }
+});
+
+// Update zone cover
+router.patch("/:id", getZone, async (req, res) => {
+    if (req.body.name != null) {
+        res.name = req.body.name;
+    }
+    if (req.body.description != null) {
+        res.description = req.body.description;
+    }
+
+    try {
+        const updatedZone = await res.zone.save();
+        return res.json(updatedZone);
     } catch (err) {
         return res.status(400).json({ msg: err.message });
     }

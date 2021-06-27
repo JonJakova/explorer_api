@@ -1,0 +1,1 @@
+exports.zone_image = "./static/media/images/zones";
